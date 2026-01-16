@@ -1,4 +1,18 @@
-.env*
-*.env
-.env
+# Virtual Environments
 venv/
+env/
+.venv/
+
+# Environment Variables
+.env
+.env.*
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+EOF
