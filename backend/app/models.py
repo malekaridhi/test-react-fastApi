@@ -1,6 +1,7 @@
-from sqlalchemy import column, Integer, Text, String,ForeignKey,TIMESTAMP, JSON,Enum,Column
+from sqlalchemy import  Integer, Text, String,ForeignKey,TIMESTAMP, JSON,Column,Enum as SQLEnum
 from sqlalchemy.sql import func
 from database import Base
+from enum import Enum
 from sqlalchemy.orm import relationship
 class LeadMagnetTypeEnum(str, Enum):
     checklist = "checklist"
@@ -12,7 +13,7 @@ class LeadMagnet(Base):
     __tablename__ = "lead_magnet"
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    type = Column(String, nullable=False)
+    type = Column(SQLEnum(LeadMagnetTypeEnum), nullable=False)
     value_promise = Column(Text, nullable=True)
     conversion_score = Column(Integer, nullable=False)
     content = Column(JSON, nullable=True)
