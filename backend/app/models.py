@@ -14,7 +14,7 @@ class LeadMagnet(Base):
     title = Column(String, nullable=False)
     type = Column(String, nullable=False)
     value_promise = Column(Text, nullable=True)
-    conversation_score = Column(Integer, nullable=False)
+    conversion_score = Column(Integer, nullable=False)
     content = Column(JSON, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     #relationships
@@ -38,7 +38,7 @@ class LandingPage(Base):
     headline = Column(String, nullable=False)
     value = Column(Text, nullable=True)
     cta = Column(String, nullable=False)
-    from_field = Column(JSON, nullable=True)
+    form_field = Column(JSON, nullable=True)
     thank_you_page = Column(Text, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     #relationship to lead magnet
