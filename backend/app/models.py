@@ -1,4 +1,4 @@
-from sqlalchemy import column, Integer, Text, String,ForeignKey,TIMESTAMP, JSON,Enum
+from sqlalchemy import column, Integer, Text, String,ForeignKey,TIMESTAMP, JSON,Enum,Column
 from sqlalchemy.sql import func
 from database import Base
 from sqlalchemy.orm import relationship
@@ -10,50 +10,56 @@ class LeadMagnetTypeEnum(str, Enum):
     
 class LeadMagnet(Base):
     __tablename__ = "lead_magnet"
-    id = column(Integer, primary_key=True, index=True)
-    title = column(String, nullable=False)
-    type = column(String, nullable=False)
-    value_promise = column(Text, nullable=True)
-    conversation_score = column(Integer, nullable=False)
-    content = column(JSON, nullable=True)
-    created_at = column(TIMESTAMP(timezone=True), server_default=func.now())
-    LandingPages = relationship("LandingPage", secondary="lead_magnet_landing_page", backref="lead_magnet")
-    Leads = relationship("Lead", backref="lead_magnet")
-    emails_templates = relationship("EmailTemplate", backref="lead_magnet")
-    offer_upgrades = relationship("upgradeOffer", backref="lead_magnet")
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    type = Column(String, nullable=False)
+    value_promise = Column(Text, nullable=True)
+    conversation_score = Column(Integer, nullable=False)
+    content = Column(JSON, nullable=True)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+    #relationships
+    LandingPages = relationship("LandingPage",  back_populates="lead_magnet")
+    Leads = relationship("Lead", back_populates="lead_magnet")
+    emails_templates = relationship("EmailTemplate", back_populates="lead_magnet")
+    offer_upgrades = relationship("upgradeOffer", back_populates="lead_magnet")
 class Lead(Base):
     __tablename__ = "leads"
-    id = column(Integer, primary_key=True, index=True)
-    name = column(String, nullable=False)
-    email = column(String, nullable=False, unique=True)
-    created_at = column(TIMESTAMP(timezone=True), server_default=func.now())
-    lead_magnet_id = column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
-    lead_magnet = relationship("LeadMagnet", backref="leads")
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+    lead_magnet_id = Column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
+    #relationship to lead magnet
+    lead_magnet = relationship("LeadMagnet", back_populates="leads")
 class LandingPage(Base):
     __tablename__ = "landing_pages"
-    id = column(Integer, primary_key=True, index=True)
-    lead_magnet_id = column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
-    headline = column(String, nullable=False)
-    value = column(Text, nullable=True)
-    cta = column(String, nullable=False)
-    from_feild = column(JSON, nullable=True)
-    thank_you_page = column(Text, nullable=True)
-    created_at = column(TIMESTAMP(timezone=True), server_default=func.now())
-    lead_magnet = relationship("LeadMagnet", backref="landing_pages")
+    id = Column(Integer, primary_key=True, index=True)
+    lead_magnet_id = Column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
+    headline = Column(String, nullable=False)
+    value = Column(Text, nullable=True)
+    cta = Column(String, nullable=False)
+    from_field = Column(JSON, nullable=True)
+    thank_you_page = Column(Text, nullable=True)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+    #relationship to lead magnet
+    lead_magnet = relationship("LeadMagnet", back_populates="landing_pages")
 class EmailTemplate(Base):
     __tablename__ = "email_templates"
-    id = column(Integer, primary_key=True, index=True)
-    lead_magnet_id = column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
-    subject = column(String, nullable=False)
-    body = column(Text, nullable=False)
-    created_at = column(TIMESTAMP(timezone=True), server_default=func.now())
-    lead_magnet = relationship("LeadMagnet", backref="email_templates")
+    id = Column(Integer, primary_key=True, index=True)
+    lead_magnet_id = Column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
+    sequence_number = Column(Integer, nullable=False)
+    subject = Column(String, nullable=False)
+    body = Column(Text, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+    # relationship to lead magnet 
+    lead_magnet = relationship("LeadMagnet", back_populates="email_templates")
 class upgradeOffer(Base):
     __tablename__ = "upgrade_offers"
-    id = column(Integer, primary_key=True, index=True)
-    lead_magnet_id = column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
-    title = column(String, nullable=False)
-    description = column(Text, nullable=True)
-    link = column(String, nullable=False)
-    created_at = column(TIMESTAMP(timezone=True), server_default=func.now())
-    lead_magnet = relationship("LeadMagnet", backref="upgrade_offers")
+    id = Column(Integer, primary_key=True, index=True)
+    lead_magnet_id = Column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
+    title = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    link = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+     # relationship to lead magnet 
+    lead_magnet = relationship("LeadMagnet", back_populates="upgrade_offers")
