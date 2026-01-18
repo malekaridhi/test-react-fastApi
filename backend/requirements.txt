@@ -4,3 +4,13 @@ sqlalchemy
 psycopg2-binary
 pydantic
 python-dotenv
+openai
+requests
+python-multipart
+reportlab
+email-validator
+python-json-logger
+pytest
+pytest-asyncio
+httpx
+mistral_inference

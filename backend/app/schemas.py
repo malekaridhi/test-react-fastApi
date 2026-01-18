@@ -9,6 +9,8 @@ class LeadMagnetBase(BaseModel):
     content: Optional[Any] = None
 class LeadMagnetCreate(LeadMagnetBase):
     pass
+class LeadMagnetContentUpdate(BaseModel):
+    content: dict
 class LeadMagnet(LeadMagnetBase):
     id: int
     created_at: datetime

@@ -19,10 +19,10 @@ class LeadMagnet(Base):
     content = Column(JSON, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     #relationships
-    LandingPages = relationship("LandingPage",  back_populates="lead_magnet")
-    Leads = relationship("Lead", back_populates="lead_magnet")
-    emails_templates = relationship("EmailTemplate", back_populates="lead_magnet")
-    offer_upgrades = relationship("upgradeOffer", back_populates="lead_magnet")
+    landing_pages = relationship("LandingPage",  back_populates="lead_magnet")
+    leads = relationship("Lead", back_populates="lead_magnet")
+    email_templates = relationship("EmailTemplate", back_populates="lead_magnet")
+    upgrade_offers = relationship("UpgradeOffer", back_populates="lead_magnet")
 class Lead(Base):
     __tablename__ = "leads"
     id = Column(Integer, primary_key=True, index=True)
@@ -54,7 +54,7 @@ class EmailTemplate(Base):
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     # relationship to lead magnet 
     lead_magnet = relationship("LeadMagnet", back_populates="email_templates")
-class upgradeOffer(Base):
+class UpgradeOffer(Base):
     __tablename__ = "upgrade_offers"
     id = Column(Integer, primary_key=True, index=True)
     lead_magnet_id = Column(Integer, ForeignKey("lead_magnet.id", ondelete="CASCADE"), nullable=False)
